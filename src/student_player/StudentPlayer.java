@@ -31,7 +31,8 @@ public class StudentPlayer extends PentagoPlayer {
         // You probably will make separate functions in MyTools.
         // For example, maybe you'll need to load some pre-processed best opening
         // strategies...
-        MyTools.getSomething();
+    	long startTime = System.currentTimeMillis();
+    	long endTime = startTime + 1990 ;
 
         int turn = boardState.getTurnNumber();
         int player = boardState.getTurnPlayer();
@@ -49,14 +50,11 @@ public class StudentPlayer extends PentagoPlayer {
         		}
         		i++;
         	}
-        }else 
-        {
-        	
         }
         
-        Move myMove = boardState.getRandomMove();
+        Move myMove = MyTools.MCTS((PentagoBoardState) boardState.clone(), 
+        							player, turn, endTime, rand) ;
         
-
         // Return your move to be processed by the server.
         return myMove;
     }
