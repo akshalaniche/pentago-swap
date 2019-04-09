@@ -49,18 +49,28 @@ public class MyTools {
     	}
     	
     	Node root = new Node(curr);
+    	long time = System.currentTimeMillis();
     	root.expandChildren(max, rand);
-    	
+    	System.out.println("Generating root children" + (System.currentTimeMillis() - time));
     	while (System.currentTimeMillis() < endTime){
     		promisingNode = root.selectPromisingNode();
+        	System.out.println("Checkpoint 1");
+
     		promisingNode.expandChildren(max, rand);
+        	System.out.println("Checkpoint 2");
+
     		nodeToExplore = promisingNode;
     		int size = nodeToExplore.getChildArray().size();
     		if (size > 0){
-    			nodeToExplore = nodeToExplore.getChildArray().get(rand.nextInt(size));
+    			nodeToExplore = nodeToExplore.explore(rand.nextInt(size));
     		}
+        	System.out.println("Checkpoint 3");
+
     		int result = nodeToExplore.rollout(player);
+        	System.out.println("Checkpoint 4");
+
     		nodeToExplore.backPropagation(result);
+        	System.out.println("Checkpoint 5");
     	}
     	
     	return root.getBestMove();

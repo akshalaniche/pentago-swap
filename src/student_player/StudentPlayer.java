@@ -32,7 +32,7 @@ public class StudentPlayer extends PentagoPlayer {
         // For example, maybe you'll need to load some pre-processed best opening
         // strategies...
     	long startTime = System.currentTimeMillis();
-    	long endTime = startTime + 1990 ;
+    	long endTime = startTime + 1800 ;
 
         int turn = boardState.getTurnNumber();
         int player = boardState.getTurnPlayer();

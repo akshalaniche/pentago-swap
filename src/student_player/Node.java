@@ -11,6 +11,7 @@ public class Node{
     	private PentagoBoardState state;
     	private Node parent;
     	private List<Node> children;
+    	private List<Node> explored;
     	private PentagoMove move; //move to get to this node from the parent
     	private int visit; //number of times this node had been visited.
     	private int score;
@@ -19,6 +20,7 @@ public class Node{
     		this.state = state;
     		parent = null;
     		children = new ArrayList<Node>();
+    		explored = new ArrayList<Node>();
     		move = null;
     		visit = 0;
     		score = 0;
@@ -28,9 +30,16 @@ public class Node{
     		this.state = state;
     		this.parent = parent;
     		children = new ArrayList<Node>();
+    		explored = new ArrayList<Node>();
     		this.move = move;
     		visit = 0;
     		score = 0;
+    	}
+    	
+    	public Node explore(int i){
+    		Node toExp =  this.children.get(i);
+    		this.explored.add(toExp);
+    		return toExp;
     	}
     	
     	public List<Node> getChildArray(){
@@ -90,7 +99,7 @@ public class Node{
         	int parentVisit = this.getVisit();
         	return Collections.max(this.getChildArray(),
         			Comparator.comparing(c -> uctScore(parentVisit, 
-        					c.getScore(), c.getVisit())));
+        					c.getScore(), c.getVisit() + 1)));
         }
     	
     	private static int scoreDraw(int player, PentagoBoardState state){
@@ -130,7 +139,9 @@ public class Node{
     	}
     	
     	public PentagoMove getBestMove(){
-    		Node bestChild = findBestChildNodeWithUCT();
+    		Node bestChild = Collections.max(this.explored,
+        			Comparator.comparing(c -> 
+        					(double) c.getScore() / (double) c.getVisit()));
     		return bestChild.getMove();
     	}
     }
