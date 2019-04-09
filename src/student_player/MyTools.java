@@ -11,10 +11,8 @@ public class MyTools {
         return Math.random();
     }
         
-    private static int MAX = 100;
-    private static int TURN = 10;
     public final static double EXP_PARAM = 1.5;
-	public final static int WIN_SCORE = 10000;
+	public final static int WIN_SCORE = 10;
 
     
     /**
@@ -33,7 +31,6 @@ public class MyTools {
     		int quadB = rand.nextInt(3);
     		if (quadB >= quadA) quadB++;
     		openingMoves[i] = new PentagoMove(centers[i%2], centers[i/2], quads[quadA], quads[quadB], playerID);
-    		System.out.println(openingMoves[i].toPrettyString());
     	}
     	return openingMoves;
     }
@@ -42,35 +39,24 @@ public class MyTools {
     public static PentagoMove MCTS(PentagoBoardState curr, int player, int turn, long endTime, Random rand){
 
     	Node promisingNode, nodeToExplore;
-    	int opp = 1 - player;
     	int max = Integer.MAX_VALUE;
-    	if (turn < TURN){
-    		max = MyTools.MAX;
-    	}
     	
     	Node root = new Node(curr);
-    	long time = System.currentTimeMillis();
-    	root.expandChildren(max, rand);
-    	System.out.println("Generating root children" + (System.currentTimeMillis() - time));
+    	root.expandChildren(rand);
     	while (System.currentTimeMillis() < endTime){
     		promisingNode = root.selectPromisingNode();
-        	System.out.println("Checkpoint 1");
 
-    		promisingNode.expandChildren(max, rand);
-        	System.out.println("Checkpoint 2");
+    		promisingNode.expandChildren(rand);
 
     		nodeToExplore = promisingNode;
     		int size = nodeToExplore.getChildArray().size();
     		if (size > 0){
     			nodeToExplore = nodeToExplore.explore(rand.nextInt(size));
     		}
-        	System.out.println("Checkpoint 3");
 
     		int result = nodeToExplore.rollout(player);
-        	System.out.println("Checkpoint 4");
 
     		nodeToExplore.backPropagation(result);
-        	System.out.println("Checkpoint 5");
     	}
     	
     	return root.getBestMove();

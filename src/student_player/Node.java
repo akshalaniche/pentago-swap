@@ -41,6 +41,10 @@ public class Node{
     		this.explored.add(toExp);
     		return toExp;
     	}
+    
+    	public void explore(Node node){
+    		this.explored.add(node);
+    	}
     	
     	public List<Node> getChildArray(){
     		return this.children;
@@ -58,7 +62,7 @@ public class Node{
     		return move;
     	}
     	
-    	public void expandChildren(int max, Random rand){
+    	public void expandChildren(Random rand){
     		if (state.gameOver()) return;
     		
     		ArrayList<PentagoMove> moves = this.state.getAllLegalMoves();
@@ -69,14 +73,12 @@ public class Node{
 			Node child;
 			PentagoBoardState nextState;
 			
-			int counter = 0;
-    		while (iter.hasNext() && counter < max){
+    		while (iter.hasNext()){
     			move = iter.next();
     			nextState = (PentagoBoardState) state.clone();
     			nextState.processMove(move);
     			child = new Node(nextState, this, move);
     			this.children.add(child);
-    			counter ++;
     		}
     	}
     	
@@ -89,8 +91,11 @@ public class Node{
         
         public Node selectPromisingNode() {
         	Node node = this;
+        	Node temp;
         	while (node.getChildArray().size() != 0) {
-        		node = node.findBestChildNodeWithUCT();
+        		temp = node.findBestChildNodeWithUCT();
+        		node.explore(temp);
+        		node = temp;
         	}
         	return node;
         }
