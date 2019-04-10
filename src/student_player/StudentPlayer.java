@@ -38,10 +38,10 @@ public class StudentPlayer extends PentagoPlayer {
         int player = boardState.getTurnPlayer();
         
         if (turn == 0){
-        	rand = new Random(2019);
+        	rand = new Random();
         	this.openingMoves = MyTools.getOpening(rand, player);
         }
-        if (turn < 4) {
+        if (turn < 3) {
         	int i = 0;
         	while (i < 4) {
         		PentagoMove move = this.openingMoves[i];
@@ -51,6 +51,12 @@ public class StudentPlayer extends PentagoPlayer {
         		i++;
         	}
         }
+        
+        if (turn < 10 && !MyTools.tictactoe) {
+        	PentagoMove move = MyTools.ticTacToe(boardState, player, turn, rand);
+        	return move;
+        }
+        
         
         Move myMove = MyTools.MCTS((PentagoBoardState) boardState.clone(), 
         							player, turn, endTime, rand) ;
