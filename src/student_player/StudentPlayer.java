@@ -53,7 +53,7 @@ public class StudentPlayer extends PentagoPlayer {
         }
         
         if (turn < 10 && !MyTools.tictactoe) {
-        	PentagoMove move = MyTools.ticTacToe(boardState, player, turn, rand);
+        	PentagoMove move = MyTools.ticTacToe(boardState, player, turn, endTime, rand);
         	return move;
         }
         

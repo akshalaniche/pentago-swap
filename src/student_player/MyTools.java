@@ -43,7 +43,7 @@ public class MyTools {
     	return openingMoves;
     }
         
-    public static PentagoMove ticTacToe(PentagoBoardState curr, int player, int turn, Random rand){
+    public static PentagoMove ticTacToe(PentagoBoardState curr, int player, int turn, long endTime, Random rand){
     	Piece playerColour = player == 0 ? Piece.WHITE : Piece.BLACK;
     	HashMap<PentagoCoord, Double> taken = new HashMap<PentagoCoord, Double>(4);
     	//centers of the quadrants that are my colour
@@ -87,7 +87,7 @@ public class MyTools {
                 
         TicTacToe root = new TicTacToe(curr, bestCenter, playerColour); //root of alpha beta pruned tree for tic tac toe
     	root.generateTree();
-    	int bestScore = root.alphaBeta(-20, 20);
+    	int bestScore = root.alphaBeta(-20, 20, endTime - 100, 6);
     	TicTacToe next = root.getBestChild();
     	
     	if (next.win(playerColour)){

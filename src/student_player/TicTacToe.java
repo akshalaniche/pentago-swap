@@ -78,13 +78,15 @@ public class TicTacToe {
 		this.children();
 		if (this.children.size() > 0){
 			for (TicTacToe child: children){
-				child.generateTree();
+				if (!child.win(Piece.BLACK) && !child.win(Piece.WHITE))
+					child.generateTree();
 			}
 		}
 	}
 	
-	public int alphaBeta(int alpha, int beta) {
-		if (this.children.size() == 0){
+	public int alphaBeta(int alpha, int beta, long endTime, int level) {
+		if (this.children.size() == 0 || //level == 0 || 
+				System.currentTimeMillis() >= endTime){
 			Piece c;
 			if ((this.player && this.playerColour == Piece.WHITE) ||
 				(!this.player && this.playerColour == Piece.BLACK)){
@@ -100,7 +102,7 @@ public class TicTacToe {
 		if (this.player){
 			//max node
 			for (TicTacToe child: this.children){
-				alpha = Math.max(alpha, child.alphaBeta(alpha, beta));
+				alpha = Math.max(alpha, child.alphaBeta(alpha, beta, endTime, level - 1));
 				if (alpha >= beta) {
 					this.score = beta;
 					return beta;
@@ -111,7 +113,7 @@ public class TicTacToe {
 		}
 		else {
 			for (TicTacToe child: this.children){
-				beta = Math.min(beta, child.alphaBeta(alpha, beta));
+				beta = Math.min(beta, child.alphaBeta(alpha, beta, endTime, level - 1));
 				if (alpha >= beta){
 					this.score = alpha;
 					return alpha;
