@@ -58,10 +58,10 @@ public class StudentPlayer extends PentagoPlayer {
         //aim to align 3 marbles inside a quadrant using the centers that are occupied by my marble
         //Once that is achieved, abandon this strategy
         //Offensive strategy
-        if (turn < 10 && !MyTools.tictactoe) {
+       /* if (turn < 10 && !MyTools.tictactoe) {
         	PentagoMove move = MyTools.ticTacToe(boardState, player, turn, endTime, rand);
         	return move;
-        }
+        }*/
         
         //For the rest of the game, adopt a neutral strategy that depends on Monte Carlo Tree Search to find the best move
         //The scoring adapts for making this strategy both offensive and defensive
